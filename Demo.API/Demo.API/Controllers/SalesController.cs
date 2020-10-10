@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 namespace Demo.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class SalesController : ControllerBase
     {
 
