@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Demo.API
 {
@@ -21,7 +23,9 @@ namespace Demo.API
             services.AddControllers();
             services.AddCors();
             services.AddHealthChecks()
-                .AddSqlServer(Configuration["ConnectionStrings:dbConnectionString"]); 
+                .AddSqlServer(Configuration["ConnectionStrings:dbConnectionString"], tags: new[] { "lite", "full" })
+                .AddAzureBlobStorage(Configuration["ConnectionStrings:blobConnectionString"], tags: new[] { "full" })
+                .AddUrlGroup(new Uri("https://adventureworks7943.azurewebsites.net/health"), tags: new[] { "full" }); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +50,14 @@ namespace Demo.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHealthChecks("/health");
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+                {
+                    Predicate = (check) => check.Tags.Contains("lite")
+                });
+                endpoints.MapHealthChecks("/health/full", new HealthCheckOptions()
+                {
+                    Predicate = (check) => check.Tags.Contains("full")
+                });
             });
         }
     }
