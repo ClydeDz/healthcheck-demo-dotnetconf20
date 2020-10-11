@@ -1,4 +1,4 @@
-var apiBaseURL = "http://adventureworks7942.trafficmanager.net/api/";
+var apiBaseURL = "https://adventureworks7941.azurewebsites.net/api/";
 var salesAPI = apiBaseURL + "sales";
 
 $.get(salesAPI, function(data) {
