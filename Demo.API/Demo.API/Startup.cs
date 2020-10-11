@@ -20,7 +20,8 @@ namespace Demo.API
         {
             services.AddControllers();
             services.AddCors();
-            services.AddHealthChecks();
+            services.AddHealthChecks()
+                .AddSqlServer(Configuration["ConnectionStrings:dbConnectionString"]); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
