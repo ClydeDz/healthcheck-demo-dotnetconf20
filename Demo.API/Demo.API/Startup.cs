@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Net.Http;
 
 namespace Demo.API
 {
@@ -58,6 +59,24 @@ namespace Demo.API
                 {
                     Predicate = (check) => check.Tags.Contains("full")
                 });
+
+                #region CONDITIONAL BRANCH REQUEST PIPELINE
+                //app.MapWhen(
+                //    context => context.Request.Method == HttpMethod.Get.Method &&
+                //    context.Request.Path.Equals("/health"),
+                //    builder => builder.UseHealthChecks("/health", new HealthCheckOptions()
+                //    {
+                //        Predicate = (check) => check.Tags.Contains("lite")
+                //    }));               
+
+                //app.MapWhen(
+                //    context => context.Request.Method == HttpMethod.Get.Method &&
+                //    context.Request.Path.Equals("/health/full"),
+                //    builder => builder.UseHealthChecks("/health/full", new HealthCheckOptions()
+                //    {
+                //        Predicate = (check) => check.Tags.Contains("full")
+                //    }));
+                #endregion
             });
         }
     }
